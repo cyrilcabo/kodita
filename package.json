@@ -1,0 +1,41 @@
+{
+  "name": "kodita",
+  "version": "1.0.0",
+  "description": "A card-bluff game.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyrilcabo/kodita.git"
+  },
+  "keywords": [
+    "Kodita",
+    "Card",
+    "game",
+    "Bluff",
+    "game",
+    "awesome"
+  ],
+  "author": "Cyril Cabo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyrilcabo/kodita/issues"
+  },
+  "homepage": "https://github.com/cyrilcabo/kodita#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.3.5",
+    "next-session": "^3.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-infinite-scroll-component": "^5.0.4",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  }
+}
