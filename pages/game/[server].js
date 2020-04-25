@@ -16,7 +16,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Hidden from '@material-ui/core/Hidden';
 
 import GroupIcon from '@material-ui/icons/Group';
-import GamePadIcon from '@material-ui/icons/GamePad';
+import GamesIcon from '@material-ui/icons/Games';
 
 import CountdownTimer from '../../components/GameUtils/countdowntimer';
 
@@ -78,7 +78,7 @@ const useStyle = makeStyles(theme => ({
 		height: '100%',
 		display: 'flex',
 		justifyContent: 'center',
-		backgroundColor: '#4c5062',
+		backgroundColor: '#4c5062 !important',
 	},
 	bottomcontrolsbutton: {
 		width: '14.28%',
@@ -91,7 +91,7 @@ const useStyle = makeStyles(theme => ({
 			flexDirection: 'column',
 			'& > button.MuiButtonBase-root': {
 				padding: 0,
-				margin: 5,
+				margin: 0,
 			}
 		}
 	},
@@ -288,7 +288,7 @@ const GameServer = (props) => {
 							<Grid item xs={4}>
 								<Button fullWidth className={classes.navactionbuttons} onClick={toggleDrawer.bind(this, "bottom")}>
 									<IconButton>
-										<GamePadIcon />
+										<GamesIcon />
 									</IconButton>
 									Actions
 								</Button>

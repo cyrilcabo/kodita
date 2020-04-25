@@ -8,7 +8,7 @@ const io = require('socket.io')(server)
 const {session} = require('next-session');
 
 const dev = process.env.NODE_ENV !== 'production'
-const nextApp = next({ dev: true })
+const nextApp = next({ dev: false })
 const handler = nextApp.getRequestHandler()
 
 const uniqueID = require('./utils/uid.js');
@@ -582,15 +582,17 @@ gameRooms.on('connection', (socket) => {
 	socket.on("disconnect", () => {
 		gameservers.forEach((server, index) => {
 			if (server.id === room_name) {
-				if (playerid === server.host) {
+				if (playerid === server.host) { 
 					const leavingHostIndex = server.players.findIndex(player => player.id===playerid);
 					const nextHost = (leavingHostIndex === server.players.length-1)
 						?server.players[0]
 						:server.players[leavingHostIndex+1];
-					Object.assign(server, {
-						host: nextHost.id,
-						hostName: nextHost.name,
-					});
+						if (nextHost) {
+							Object.assign(server, {
+								host: nextHost.id,
+								hostName: nextHost.name,
+							});
+						}
 				}
 				Object.assign(server, {
 					players: server.players.filter(player => player.id !== playerid),
@@ -644,7 +646,7 @@ nextApp.prepare().then(() => {
 		return handler(req, res);
 	});
 	
-	server.listen(80, err => {
+	server.listen(process.env.PORT || 3000, err => {
 		if (err) throw err
 		console.log('> Ready on http://localhost:3000')
   })

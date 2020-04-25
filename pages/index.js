@@ -30,9 +30,6 @@ const useStyle = makeStyles({
 		height: '80%',
 		padding: 20,
 	},
-	title: {
-		fontSize: '4em',
-	},
 	formcontrols: {
 		height: '8vh',
 	}
@@ -62,10 +59,10 @@ const Index = (props) => {
 			<div className={classes.root}>
 				<Grid item xs={10} md={7} style={{height: '100%',}} alignItems="center" container>
 					<Paper className={classes.logincontainer}>	
-						<Grid container justify="center" alignItems="center" xs={12}>
+						<Grid container justify="center" alignItems="center" item xs={12}>
 							<Grid item container xs={10} direction="column" alignItems="center">
 								<UtilIcon name="KODITA" width={'100%'} height={'100%'} isRound />
-								<Typography component={'h2'} className={classes.title} > Kodita </Typography>
+								<Typography component={'h2'} style={{fontSize: '4em'}} > Kodita </Typography>
 							</Grid>
 							<Divider />
 							<Grid xs={10} md={8} item spacing={1} container >
@@ -99,7 +96,9 @@ const Index = (props) => {
 											margin: 'auto',
 										}}
 									>
-										<About />
+										<div style={{height: '100%', width: '100%'}}>	
+											<About />
+										</div>
 									</Modal>
 								</Grid>
 							</Grid>

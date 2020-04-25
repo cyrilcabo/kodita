@@ -36,7 +36,6 @@ const Layout = (props) => {
 		<React.Fragment>
 			<Head>
 				<title> Kodita </title>
-				<link  rel="icon" href="/kodita.svg" />
 			</Head>
 			{props.disableNav
 				?""

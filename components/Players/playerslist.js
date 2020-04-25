@@ -61,7 +61,7 @@ const PlayersList = (props) => {
 						props.hasStarted
 							? !player.isDead
 								?[...[{action: 'UNKNOWN'}, {action: 'UNKNOWN'}].splice(player.deadCards.length), ...player.deadCards].map(card => {
-									return <UtilIcon name={card.action} size="medium" />
+									return <UtilIcon name={card.action} size="medium" key={card.id} />
 								})
 								:<UtilIcon name={"DEAD"} size="medium" />
 							:""

@@ -128,7 +128,7 @@ const Game = (props) => {
 	}
 	
 	const gameRooms = rooms.map((room) => {
-		return <React.Fragment>
+		return <React.Fragment key={room.id}>
 			<ListItem>
 				<ListItemText
 					primary={room.hostName}
@@ -152,7 +152,7 @@ const Game = (props) => {
 	return (
 		<Layout>
 			<div className={classes.root}>
-				<Grid xs={12} justify="center" alignItems="center" container style={{height: '100%'}}>
+				<Grid xs={12} item justify="center" alignItems="center" container style={{height: '100%'}}>
 					<Grid item xs={12} md={8} container justify="center" className={classes.container}>
 						<Paper className={classes.lobbycontainer}>
 							<Grid item xs={12} className={classes.searchbar} container>
