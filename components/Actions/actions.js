@@ -58,7 +58,7 @@ export const attackActionsSrc = [
 		name: "INQUISITOR",
 		details: "Draw a card, and optionally take it.",
 		variant: "PEEK",
-		type: null,
+		type: "IS_OPEN",
 		purpose: "ATTACK",
 		fee: null,
 		state: false,

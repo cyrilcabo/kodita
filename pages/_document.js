@@ -8,6 +8,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
 			<link  rel="icon" href="/kodita.svg" />
+			<meta name="viewport" content="width=device-width, user-scalable=no" />
         </Head>
         <body>
           <Main />

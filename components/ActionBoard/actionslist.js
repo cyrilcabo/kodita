@@ -95,7 +95,10 @@ const ActionsList = (props) => {
 			case "SHOW CARD":
 				return <span>the card all along! {recepient}, sacrifice a card or I'll kill it for you.</span>;
 			case "PASS":
-				return <span>passed! He's not up to the challenge! </span>;
+				const previousAction = props.actionQueue[props.actionQueue.length-2];
+				return previousAction.name === "INQUISITOR" && previousAction.variant === "PEEK"  
+					?<span>passed! He's not going to take the card!</span>
+					:<span>passed! He's not up to the challenge! </span>;
 			case "PICK_CARD":
 				return (action.variant === "IS_KILL")
 						?<span><span>decided to kill</span><p><UtilIcon name={action.payload.action} width={'5em'} height={'5em'} /></p></span>

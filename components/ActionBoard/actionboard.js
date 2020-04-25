@@ -122,7 +122,7 @@ const ActionBoard = (props) => {
 					fee: null,
 				}, null)}> Pass </Button>,
 			];
-		} else if (((actionQueue.type === "IS_OPEN" && (actionQueue.name === "DUKE" || actionQueue.name === "AMBASSADOR"))&& actionQueue.turn !== user.id) || (actionQueue.type === "HAS_RECEPIENT" && actionQueue.name !== "KODITA" && actionQueue.recepientId === user.id && actionQueue.name !== "PICK_CARD") && actionQueue.name !== "SHOW CARD" && actionQueue.name !== "CHALLENGE") {
+		} else if (((actionQueue.type === "IS_OPEN" && (actionQueue.name === "DUKE" || actionQueue.name === "AMBASSADOR" || (actionQueue.name === "INQUISITOR" && actionQueue.variant === "PEEK")))&& actionQueue.turn !== user.id) || (actionQueue.type === "HAS_RECEPIENT" && actionQueue.name !== "KODITA" && actionQueue.recepientId === user.id && actionQueue.name !== "PICK_CARD") && actionQueue.name !== "SHOW CARD" && actionQueue.name !== "CHALLENGE") {
 			return <Button color="secondary" variant="contained" onClick={props.dispatchAction.bind(this, {
 				name: "CHALLENGE",
 				details: "Call a bluff",

@@ -98,7 +98,7 @@ function gameStart (id, callback) {
 					return {
 						...player,
 						cards: [deck.splice(drawCard(), 1)[0], deck.splice(drawCard(), 1)[0]],
-						coins: 3,
+						coins: 2,
 						isTurn: (turn === player.id),
 					}
 				}),
@@ -124,7 +124,7 @@ function gameStart (id, callback) {
 }
 
 
-function moderator(room, actionArray, sender, recepient, FEE) { 
+function moderator(room, actionArray, sender, recepient, FEE, variant) { 
 	gameservers.forEach((server) => {
 		if (server.id === room) {
 			for (let action of actionArray) {
@@ -134,6 +134,8 @@ function moderator(room, actionArray, sender, recepient, FEE) {
 						break;
 					case "CONTESSA":
 						break;
+					case "ASSASSIN_FEE":
+						INCOME = -3;
 					case "INCOME":
 						INCOME = action.name==="INCOME" ?1 :INCOME;
 					case "FOREIGN AID":
@@ -153,7 +155,9 @@ function moderator(room, actionArray, sender, recepient, FEE) {
 						if (action.purpose === "DEFENSE") break;
 						Object.assign(server, {
 							players: server.players.map(player => {
-								if (player.id === sender) player.coins += 2;
+								if (player.id === sender) player.coins = (server.players.find(p => p.id === recepient).coins-2 < 0)
+									?server.players.find(p => p.id === recepient).coins === 1 ?player.coins+1 :player.coins+0
+									:player.coins+2
 								if (player.id === recepient) player.coins = (player.coins-2 < 0) ?0  :player.coins-2;
 								return player;
 							}),
@@ -181,13 +185,14 @@ function moderator(room, actionArray, sender, recepient, FEE) {
 					case "AMBASSADOR":
 						if (!action.payload) break;
 					case "CARD_DRAW":
+						if (variant === "SHOW CARD") drawRecepient = sender;
 					case "INQUISITOR":
-						if (action.variant === "SHOW" || action.purpose === "DEFENSE") break;
+						if (variant === "SHOW" || action.purpose === "DEFENSE") break;
 						let cardIndex = Math.floor(Math.abs(Math.random()*server.deck.length))
-						if (action.variant === "PEEK" || action.variant === "DRAW") {
+						if (variant === "PEEK" || action.name === "DRAW") {
 							if (!action.payload) break;
-							if (action.variant === "PEEK") { 
-								cardIndex = server.deck.findIndex(card => card.id === payload[0].id);
+							if (variant === "PEEK") { 
+								cardIndex = server.deck.findIndex(card => card.id === action.payload[0].id);
 							}
 						}
 						let cardToPlayer = server.deck.splice(cardIndex, 1);
@@ -195,10 +200,11 @@ function moderator(room, actionArray, sender, recepient, FEE) {
 						Object.assign(server, {
 							players: server.players.map(player => {
 								if (player.id === drawRecepient) {
-									cardToDeck = action.variant === "PEEK"
-										?player.cards.splice(player.cards.findIndex(card => card.id === action.payload[1].id))
-										:player.cards.splice(player.cards.findIndex(card => action.payload.id===card.id), 1);
-									player.cards = [...player.cards, ...cardToPlayer];
+									const payload = variant === "PEEK" ?action.payload[1] :action.payload;
+									const payloadIndex = player.cards.findIndex(card => payload.id === card.id);
+									cardToDeck = player.cards.splice(payloadIndex, 1);
+									if (payloadIndex) player.cards = [...player.cards, ...cardToPlayer];
+									else player.cards = [...cardToPlayer, ...player.cards];
 								}
 								return player;
 							}),
@@ -234,7 +240,7 @@ function moderator(room, actionArray, sender, recepient, FEE) {
 					ongoing: false,
 					queue: [],
 				},
-				hasEnded: alive.length === 1, 
+				hasEnded: alive.length === 1 || server.players.length < 2, 
 				winner: alive.length === 1 && alive[0], 
 			});
 		}
@@ -283,7 +289,6 @@ gameLobby.on('connection', (socket) => {
 	socket.on("creategame", () => {
 		createGame({id: playerid, name: username}, (id) => {
 			gameLobby.to(socket.id).emit("gamecreated", id);
-			console.log(gameservers.find(server => server.id==id));
 		});
 	});
 	
@@ -311,8 +316,9 @@ gameRooms.on('connection', (socket) => {
 					if (!server.hasStarted) return false;
 					server.players.forEach((player) => {
 						if (player.id === playerid) {
-							const {recepientId, name, type, purpose, turn, queue} = server.actionQueue;
+							const {recepientId, senderId, name, type, purpose, turn, queue, variant} = server.actionQueue;
 							const action = packet[1];
+							if (action.senderId === senderId && ((name !== "INQUISITOR" && variant !== "PEEK") && name !== "AMBASSADOR")) return false;
 							if (action.purpose === "DEFENSE") {
 								if ((recepientId !== player.id && type !== "IS_OPEN") || (turn === player.id && queue.length < 1)) {
 									return false;
@@ -320,7 +326,9 @@ gameRooms.on('connection', (socket) => {
 									if (type === "IS_OPEN") {
 										if (name==="FOREIGN AID" && action.name==="DUKE") {
 											return next();
-										} else if ((name=="DUKE" || name==="AMBASSADOR") && action.name==="CHALLENGE") {
+										} else if (((name==="INQUISITOR" && variant === "PEEK") || name=="DUKE" || name==="AMBASSADOR") && action.name==="CHALLENGE") {
+											return next();
+										} else if ((name==="INQUISITOR" && variant === "PEEK") && action.name === "PASS" && action.senderId === senderId) {
 											return next();
 										}
 									} else {
@@ -436,7 +444,7 @@ gameRooms.on('connection', (socket) => {
 					default: break;
 				}
 				
-				function cardKilled (cardToKill, cardToDraw, sender, recepient, killFee) {
+				function cardKilled (cardToKill, cardToDraw, sender, recepient, killFee, inquisitor) {
 					gameRooms.in(room_name).emit('counter_start', 5);
 					const killAction = cardToKill ?[{name: 'CARD_KILLED', payload: cardToKill}] :[];
 					const drawAction = cardToDraw ?[{name: 'CARD_DRAW', payload: cardToDraw}] :[];
@@ -444,7 +452,7 @@ gameRooms.on('connection', (socket) => {
 						moderator(room_name, [
 							...killAction,
 							...drawAction,
-						], sender, recepient, killFee);
+						], sender, recepient, killFee, inquisitor ?inquisitor :null);
 						gameRooms.in(room_name).emit('counter_end');
 						gameRooms.in(room_name).emit("storeupdated");
 					}, 5000);
@@ -459,23 +467,37 @@ gameRooms.on('connection', (socket) => {
 				}
 				
 				if (action.name === "INCOME" || action.name === "PASS") {
-					let newAction;
+					let newAction, newSender, newRecepient, FEE = null;
 					gameRooms.in(room_name).emit("counter_start", 5);
 					setTimeout(() => {
 						if (action.name === "PASS") {
-							const challengerAction = server.actionQueue.queue[server.actionQueue.queue.length-3];
-							switch (challengerAction.name) {
-								case "CONTESSA":
-								case "CAPTAIN":
-								case "INQUISITOR":
-								case "DUKE":
-								case "AMBASSADOR":
-									if (challengerAction.purpose === "DEFENSE") newAction = server.actionQueue.queue[server.actionQueue.queue.length-4];
-									break;
-								default: break;
+							const previousAction = server.actionQueue.queue[server.actionQueue.queue.length-2];
+							if (previousAction.name === "INQUISITOR" && previousAction.variant === "PEEK" && previousAction.senderId === playerid) {
+								newAction = {name: "PASS"};
+							} else {
+								const challengerAction = server.actionQueue.queue[server.actionQueue.queue.length-3];
+								switch (challengerAction.name) {
+									case "CONTESSA":
+									case "CAPTAIN":
+									case "INQUISITOR":
+									case "DUKE":
+									case "ASSASSIN":
+										if (challengerAction.name === "ASSASSIN") {
+											FEE = 3;
+											newAction = {name: "ASSASSIN_FEE"};
+										}
+									case "AMBASSADOR":
+										if (challengerAction.purpose === "DEFENSE") {
+											newAction = server.actionQueue.queue[server.actionQueue.queue.length-4];
+											newSender = newAction.senderId;
+											newRecepient = newAction.recepientId;
+										}
+										break;
+									default: break;
+								}
 							}
 						};
-						moderator(room_name, [newAction ?newAction :action], action.senderId, null);
+						moderator(room_name, [newAction ?newAction :action], newSender ?newSender :action.senderId, newRecepient ?newRecepient :action.recepientId, FEE);
 						const store = storeupdate(room_name, playerid);
 						gameRooms.in(room_name).emit("counter_end");
 						gameRooms.in(room_name).emit("storeupdated");
@@ -485,7 +507,12 @@ gameRooms.on('connection', (socket) => {
 					const actionInitiator = server.actionQueue.queue[server.actionQueue.queue.length-2];
 					switch(actionInitiator.name) {
 						case "SHOW CARD":
-							cardKilled(action.payload, actionInitiator.payload, actionInitiator.senderId, actionInitiator.recepientId);
+							cardKilled(action.payload,
+								server.players.find(p => p.id===actionInitiator.senderId).cards.find(card => card.action===server.actionQueue.queue[server.actionQueue.queue.length-4].name), 
+								actionInitiator.senderId, 
+								actionInitiator.recepientId,
+								null,
+								"SHOW CARD");
 							break;
 						case "KODITA":
 						case "ASSASSIN":
@@ -493,7 +520,7 @@ gameRooms.on('connection', (socket) => {
 							cardKilled(action.payload, null, actionInitiator.senderId, actionInitiator.recepientId, FEE);
 							break;
 						case "AMBASSADOR":
-							cardKilled(null, action, null, action.senderId);
+							cardKilled(null, action.payload, null, action.senderId);
 							break;
 						case "INQUISITOR":
 							if (actionInitiator.variant === "SHOW") {
@@ -503,8 +530,9 @@ gameRooms.on('connection', (socket) => {
 									payload: action.payload,
 								}), 500);
 							}
-							const payload = (actionInitiator.variant === "SHOW") ?null :action.payload;
-							cardKilled(null, payload, null, action.senderId);
+							let payload = (actionInitiator.variant === "SHOW") ?null :action.payload;
+							const inquisitor = actionInitiator.variant;
+							cardKilled(null, payload, null, action.senderId, null, inquisitor);
 							break;
 						default: break;
 					}
@@ -515,8 +543,8 @@ gameRooms.on('connection', (socket) => {
 						if (server.actionQueue.queue.length && queueEntry !== undefined && !queueEntry.isChallenged) {
 							gameRooms.in(room_name).emit("counter_end");
 							if (action.name === "SHOW CARD" || action.name === "KODITA" || action.name === "ASSASSIN" || ((action.name === "INQUISITOR") && action.type !== "DEFENSE")) {
-								let actionName, actionVariant, actionSender, actionRecepient, FEE;
-								const cardToKill = (action.name === "INQUISITOR" && (action.variant === "SHOW" || action.variant === "PEEK"))
+								let actionName, actionVariant, actionSender, actionRecepient, FEE, cardToDraw;
+								const cardToKill = (action.name === "INQUISITOR")
 									?null
 									:server.players.find(player => player.id === action.recepientId).cards[0];
 								switch (action.name) {	
@@ -527,24 +555,29 @@ gameRooms.on('connection', (socket) => {
 										actionSender = {name: action.recepient, id: action.recepientId};
 										actionName = "PICK_CARD";
 										actionVariant = "IS_KILL";
+										if (action.name==="SHOW CARD") {
+											cardToDraw = server.players.find(p => p.id===action.senderId).cards(card => card.action === server.actionQueue.queue[server.actionQueue.queue.length-3].name);
+											actionVariant = "SHOW CARD";
+										}
 										break;
 									case "INQUISITOR":
+										actionSender = {name: action.sender, id: action.senderId};
+										actionRecepient = {name: action.recepient, id: action.recepientId};
+										actionName = "INQUISITOR";
+										actionVariant = action.variant;
 										if (action.variant === "DRAW") {
-											variant = action.variant;
+											actionName = "PICK_CARD";
+											actionVariant = "DRAW";
+											cardToDraw = server.players.find(player => player.id === action.recepientId).cards[0];
 										} else if (action.variant === "PEEK") {
 											variant = action.variant;
 										} else {
-											variant = action.variant;
 											setTimeout(() => gameRooms.to(actionInitiator.socketrecepient).emit("CARD_REVEAL", {
 												queue: server.actionQueue, 
 												action: action,
 												payload: cardToKill,
 											}), 500);
 										}
-										actionSender = {name: action.sender, id: action.senderId};
-										actionRecepient = {name: action.recepient, id: action.recepientId};
-										actionName = "INQUISITOR";
-										actionVariant = variant ?actionVariant :"DRAW";
 										break;
 									default: break;
 								}
@@ -565,7 +598,7 @@ gameRooms.on('connection', (socket) => {
 									}
 								});
 								gameRooms.in(room_name).emit("storeupdated");
-								cardKilled(cardToKill, action.payload, action.senderId, action.recepientId, FEE);
+								cardKilled(cardToKill, cardToDraw ?cardToDraw :action.payload, action.senderId, action.recepientId, FEE, actionVariant);
 							} else {
 								if (queueEntry.name === "CHALLENGE") action.name = "PASS";
 								moderator(room_name, [action], action.senderId, action.recepientId);
@@ -597,6 +630,8 @@ gameRooms.on('connection', (socket) => {
 				Object.assign(server, {
 					players: server.players.filter(player => player.id !== playerid),
 				});
+				if (playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) 
+					moderator(room_name, [{name: "PASS"}]);
 				gameRooms.in(room_name).emit("storeupdated");
 				if (server.players.length === 0) {
 					gameservers.splice(index, 1);
@@ -613,7 +648,8 @@ nextApp.prepare().then(() => {
 	
 	app.get('/game/:server', (req, res) => {
 		if (!req.session.playerID) res.redirect('/');
-		else if (!gameservers.find(server => server.id===req.params.server) || gameservers.find(server => server.id===req.params.server).players.length >= 6) res.redirect("/game");
+		else if (!gameservers.find(server => server.id===req.params.server) || gameservers.find(server => server.id===req.params.server).hasStarted || gameservers.find(server => server.id===req.params.server).players.length >= 6) 
+			res.redirect("/game");
 		else return handler(req, res);
 	});
 	
