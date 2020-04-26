@@ -153,10 +153,11 @@ function moderator(room, actionArray, sender, recepient, FEE, variant) {
 						break;
 					case "CAPTAIN":
 						if (action.purpose === "DEFENSE") break;
+						const playerCoins = server.players.find(p => p.id === recepient).coins;
 						Object.assign(server, {
 							players: server.players.map(player => {
-								if (player.id === sender) player.coins = (server.players.find(p => p.id === recepient).coins-2 < 0)
-									?server.players.find(p => p.id === recepient).coins === 1 ?player.coins+1 :player.coins+0
+								if (player.id === sender) player.coins = (playerCoins-2 < 0)
+									?playerCoins === 1 ?player.coins+1 :player.coins+0
 									:player.coins+2
 								if (player.id === recepient) player.coins = (player.coins-2 < 0) ?0  :player.coins-2;
 								return player;
