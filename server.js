@@ -317,9 +317,9 @@ gameRooms.on('connection', (socket) => {
 					if (!server.hasStarted) return false;
 					server.players.forEach((player) => {
 						if (player.id === playerid) {
-							if (player.isDead) return false;
-							const {recepientId, senderId, name, type, purpose, turn, queue, variant} = server.actionQueue;
 							const action = packet[1];
+							if (player.isDead || server.players.find(p => p.id===action.recepientId).isDead) return false;
+							const {recepientId, senderId, name, type, purpose, turn, queue, variant} = server.actionQueue;
 							if (action.senderId === senderId && ((name !== "INQUISITOR" && variant !== "PEEK") && name !== "AMBASSADOR")) return false;
 							if (action.purpose === "DEFENSE") {
 								if ((recepientId !== player.id && type !== "IS_OPEN") || (turn === player.id && queue.length < 1)) {
@@ -667,8 +667,10 @@ gameRooms.on('connection', (socket) => {
 				Object.assign(server, {
 					players: server.players.filter(player => player.id !== playerid),
 				});
-				if (playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) 
+				if ((playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) && server.hasStarted) {
+					gameRooms.in(room_name).emit("counter_end");	
 					moderator(room_name, [{name: "PASS"}]);
+				}
 				gameRooms.in(room_name).emit("storeupdated");
 				if (server.players.length === 0) {
 					gameservers.splice(index, 1);
