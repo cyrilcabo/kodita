@@ -667,7 +667,7 @@ gameRooms.on('connection', (socket) => {
 				Object.assign(server, {
 					players: server.players.filter(player => player.id !== playerid),
 				});
-				if ((playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) && server.hasStarted) {
+				if (server.actionQueue.turn && (playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) && server.hasStarted) {
 					gameRooms.in(room_name).emit("counter_end");	
 					moderator(room_name, [{name: "PASS"}]);
 				}
