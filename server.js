@@ -491,6 +491,10 @@ gameRooms.on('connection', (socket) => {
 											newAction = server.actionQueue.queue[server.actionQueue.queue.length-4];
 											newSender = newAction.senderId;
 											newRecepient = newAction.recepientId;
+											if (newAction.name === "ASSASSIN") {
+												newAction.payload = server.players.find(p => p.id===newRecepient).cards[0];
+												FEE = 3;
+											}
 										}
 										break;
 									default: break;
@@ -542,9 +546,9 @@ gameRooms.on('connection', (socket) => {
 						const queueEntry = server.actionQueue.queue.find(queue => queue.id===action.id);
 						if (server.actionQueue.queue.length && queueEntry !== undefined && !queueEntry.isChallenged) {
 							gameRooms.in(room_name).emit("counter_end");
-							if (action.name === "SHOW CARD" || action.name === "KODITA" || action.name === "ASSASSIN" || ((action.name === "INQUISITOR") && action.type !== "DEFENSE")) {
+							if (action.name === "SHOW CARD" || action.name === "KODITA" || action.name === "ASSASSIN" || ((action.name === "INQUISITOR") && action.purpose !== "DEFENSE")) {
 								let actionName, actionVariant, actionSender, actionRecepient, FEE, cardToDraw;
-								const cardToKill = (action.name === "INQUISITOR")
+								const cardToKill = (action.name === "INQUISITOR" && action.variant !== "SHOW")
 									?null
 									:server.players.find(player => player.id === action.recepientId).cards[0];
 								switch (action.name) {	
@@ -556,8 +560,7 @@ gameRooms.on('connection', (socket) => {
 										actionName = "PICK_CARD";
 										actionVariant = "IS_KILL";
 										if (action.name==="SHOW CARD") {
-											cardToDraw = server.players.find(p => p.id===action.senderId).cards(card => card.action === server.actionQueue.queue[server.actionQueue.queue.length-3].name);
-											actionVariant = "SHOW CARD";
+											cardToDraw = server.players.find(p => p.id===action.senderId).cards.find(card => card.action === server.actionQueue.queue[server.actionQueue.queue.length-3].name);
 										}
 										break;
 									case "INQUISITOR":
@@ -570,9 +573,11 @@ gameRooms.on('connection', (socket) => {
 											actionVariant = "DRAW";
 											cardToDraw = server.players.find(player => player.id === action.recepientId).cards[0];
 										} else if (action.variant === "PEEK") {
-											variant = action.variant;
+											actionName = "PASS";
 										} else {
-											setTimeout(() => gameRooms.to(actionInitiator.socketrecepient).emit("CARD_REVEAL", {
+											actionName = "PICK_CARD";
+											actionVariant = "CARD_REVEAL";
+											setTimeout(() => gameRooms.to(action.socketrecepient).emit("CARD_REVEAL", {
 												queue: server.actionQueue, 
 												action: action,
 												payload: cardToKill,
@@ -598,10 +603,40 @@ gameRooms.on('connection', (socket) => {
 									}
 								});
 								gameRooms.in(room_name).emit("storeupdated");
-								cardKilled(cardToKill, cardToDraw ?cardToDraw :action.payload, action.senderId, action.recepientId, FEE, actionVariant);
+								cardKilled(
+									(actionName === "PICK_CARD" && actionVariant === "CARD_REVEAL") ?null :cardToKill,
+									cardToDraw ?cardToDraw :action.payload, 
+									action.senderId, action.recepientId, 
+									FEE, 
+									actionVariant
+								);
 							} else {
-								if (queueEntry.name === "CHALLENGE") action.name = "PASS";
-								moderator(room_name, [action], action.senderId, action.recepientId);
+								const previousAction = server.actionQueue.queue[server.actionQueue.queue.length-2];
+								const actionInitiator = server.actionQueue.queue[server.actionQueue.queue.length-3];
+								let sender = action.senderId, recepient = action.recepientId, FEE = null;
+								if (queueEntry.name === "CHALLENGE") {
+									action.name = "PASS";
+									switch (previousAction.name) {
+										case "ASSASSIN":
+											action.name = "ASSASSIN_FEE";
+											sender = previousAction.senderId;
+											break;
+										case "DUKE":
+										case "CAPTAIN":
+										case "AMBASSADOR":
+										case "INQUISITOR":
+											if (previousAction.purpose !== "DEFENSE") break;
+										case "CONTESSA":
+											action = actionInitiator;
+											if (actionInitiator.name === "ASSASSIN") {
+												action.payload = server.players.find(p => p.id===recepient).cards[0];
+												FEE = 3;
+											}
+											break;
+										default: break;
+									}
+								}
+								moderator(room_name, [action], sender, recepient, FEE);
 								gameRooms.in(room_name).emit("storeupdated");
 							}
 						}
