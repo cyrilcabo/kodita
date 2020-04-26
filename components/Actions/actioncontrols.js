@@ -29,7 +29,7 @@ const ActionControls = (props) => {
 			 const targetPlayers = (action.type === "HAS_RECEPIENT" && action.purpose==="ATTACK") 
 					?props.players.filter(player => player.id !== props.user.id).map((player, pIndex) => {
 						const details = <span> {action.details} {player.name}</span>;
-						return <ListItem button disabled={!action.state} key={pIndex} onClick={action.state ?props.dispatchAction.bind(this, action, player) :() => null}>
+						return <ListItem button disabled={!action.state || player.isDead} key={pIndex} onClick={(action.state && !player.isDead) ?props.dispatchAction.bind(this, action, player) :() => null}>
 							<ListItemIcon> <UtilIcon name={action.name} size="medium" isRound /> </ListItemIcon>
 							<ListItemText primary={details} />
 						</ListItem>
