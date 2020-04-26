@@ -318,7 +318,7 @@ gameRooms.on('connection', (socket) => {
 					server.players.forEach((player) => {
 						if (player.id === playerid) {
 							const action = packet[1];
-							if (player.isDead || server.players.find(p => p.id===action.recepientId).isDead) return false;
+							if (player.isDead || (action.recepientId && server.players.find(p => p.id===action.recepientId).isDead)) return false;
 							const {recepientId, senderId, name, type, purpose, turn, queue, variant} = server.actionQueue;
 							if (action.senderId === senderId && ((name !== "INQUISITOR" && variant !== "PEEK") && name !== "AMBASSADOR")) return false;
 							if (action.purpose === "DEFENSE") {
