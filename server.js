@@ -393,7 +393,7 @@ gameRooms.on('connection', (socket) => {
 			if(server.id===id) {
 				if (server.players.length > 1) {
 					gameRooms.in(room_name).emit("counter_start", 5);
-					setTimeout(() => gameStart(id), 5000);
+					gameStart(id);
 					gameRooms.in(room_name).emit("gamestarted");
 				}
 			}
