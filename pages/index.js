@@ -47,7 +47,7 @@ const Index = (props) => {
 	
 	const login = async () => {
 		if (name.length >= 5) {
-			if (!props.username) await fetch(`http://localhost:3000/api/login?name=${name}`);
+			if (!props.username) await fetch(`https://kodita.herokuapp.com/api/login?name=${name}`);
 			Router.push('/game');
 		} 
 	}
