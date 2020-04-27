@@ -619,10 +619,10 @@ gameRooms.on('connection', (socket) => {
 									actionVariant
 								);
 							} else {
+								const previousAction = server.actionQueue.queue[server.actionQueue.queue.length-2];
+								const actionInitiator = server.actionQueue.queue[server.actionQueue.queue.length-3];
+								let sender = action.senderId, recepient = action.recepientId, FEE = null;
 								if (server.actionQueue.queue[server.actionQueue.queue.length-1].name !== "CONTINUE") {
-									const previousAction = server.actionQueue.queue[server.actionQueue.queue.length-2];
-									const actionInitiator = server.actionQueue.queue[server.actionQueue.queue.length-3];
-									let sender = action.senderId, recepient = action.recepientId, FEE = null;
 									if (queueEntry.name === "CHALLENGE") {
 										action.name = "PASS";
 										switch (previousAction.name) {
