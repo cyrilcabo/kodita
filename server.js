@@ -229,8 +229,8 @@ function moderator(room, actionArray, sender, recepient, FEE, variant) {
 			Object.assign(server, {
 				round: server.round+1,
 				actionQueue: {		
-					turn: nextTurn.id,
-					turnName: nextTurn.name,
+					turn: nextTurn ?nextTurn.id :null,
+					turnName: nextTurn ?nextTurn.name :null,
 					senderId: "",
 					sender: "",
 					name: "",
@@ -667,9 +667,14 @@ gameRooms.on('connection', (socket) => {
 				Object.assign(server, {
 					players: server.players.filter(player => player.id !== playerid),
 				});
-				if (server.actionQueue.turn && (playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId) && server.hasStarted) {
-					gameRooms.in(room_name).emit("counter_end");	
-					moderator(room_name, [{name: "PASS"}]);
+				if (server.actionQueue.turn && (playerid === server.actionQueue.turn || playerid === server.actionQueue.senderId || playerid === server.actionQueue.recepientId) && server.hasStarted) {
+					gameRooms.in(room_name).emit("counter_end");
+					if (!server.actionQueue.queue.length) {
+						moderator(room_name, [{action: "PASS"}]);
+					} else {
+						server.actionQueue.queue[server.actionQueue.queue.length-1].isChallenged = true;
+						server.actionQueue.queue[server.actionQueue.queue.length-1].name = "PASS";
+					}
 				}
 				gameRooms.in(room_name).emit("storeupdated");
 				if (server.players.length === 0) {
