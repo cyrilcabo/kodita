@@ -99,6 +99,8 @@ const ActionsList = (props) => {
 				return previousAction.name === "INQUISITOR" && previousAction.variant === "PEEK"  
 					?<span>passed! He's not going to take the card!</span>
 					:<span>passed! He's not up to the challenge! </span>;
+			case "CONTINUE":
+				return <span>left the game!</span>;
 			case "PICK_CARD":
 				return (action.variant === "IS_KILL")
 						?<span><span>decided to kill</span><p><UtilIcon name={action.payload.action} width={'5em'} height={'5em'} /></p></span>
