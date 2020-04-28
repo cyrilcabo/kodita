@@ -112,6 +112,7 @@ const ActionBoard = (props) => {
 					type: "HAS_RECEPIENT",
 					purpose: "DEFENSE",
 					fee: null,
+					payload: user.cards.find(card => card.action===actionQueue.queue[actionQueue.queue.length-2].name),
 				}, {id: actionQueue.senderId, name: actionQueue.sender})}> Show Card </Button>,
 				<Button color="secondary" variant="contained" onClick={props.dispatchAction.bind(this, {
 					name: "PASS",
