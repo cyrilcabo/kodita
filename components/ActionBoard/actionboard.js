@@ -84,7 +84,7 @@ const ActionBoard = (props) => {
 	const actionsList = React.useRef(null);
 	
 	React.useEffect(() => {
-		actionsList.current.scrollIntoView({behavior: 'smooth'});
+		actionsList.current.scrollIntoView({behavior: 'smooth', block: 'end'});
 	}, [ActionsList]);
 	
 	const startButton = () => {
