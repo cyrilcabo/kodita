@@ -93,7 +93,11 @@ const ActionsList = (props) => {
 			case "INCOME":
 				return <span className={classes.income}>decided to play safe, and takes {icon} 1 coin from bank!</span>;
 			case "SHOW CARD":
-				return <span>the card all along! {recepient}, sacrifice a card or I'll kill it for you.</span>;
+				return <span>
+					<span> the card all along! </span>
+					<p> <UtilIcon name={action.payload.action} width={'5em'} height={'5em'} /> </p>
+					<span>{recepient}, sacrifice a card or I'll kill it for you.</span>
+				       </span>;
 			case "PASS":
 				const previousAction = props.actionQueue[props.actionQueue.length-2];
 				return previousAction.name === "INQUISITOR" && previousAction.variant === "PEEK"  
