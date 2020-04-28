@@ -75,8 +75,8 @@ const ActionsList = (props) => {
 						?"to show one card!" 
 						:action.variant === "PEEK"
 							?"will draw a card from deck, and decide if he'll take it."
-							:"to exchange a card from deck!";
-				return type ?<span>{icon} {name(classes.inquisitor)} and will force {recepient} {payload}</span>
+							:"is forced to exchange a card from deck!";
+				return type ?<span>{icon} {name(classes.inquisitor)} and {recepient} {payload}</span>
 							:<span>{icon} {name(classes.inquisitor)}, and will block the steal!</span>;
 			case "CARD_REVEAL":
 				return <span><span>shown his card:</span><p><UtilIcon name={action.payload.action} width={'5em'} height={'5em'} /></p></span>;
@@ -107,10 +107,10 @@ const ActionsList = (props) => {
 						:(action.variant === "PEEK_CARD")
 							?<span>drawn and picked a card from deck!</span>
 							:(action.variant==="CARD_REVEAL")
-								?<span>has been forced to show his card!</span>
+								?<span>been forced to show his card!</span>
 								:(props.actionQueue[props.actionQueue.length-2].name === "AMBASSADOR")
 									?<span>drawn a card from deck!</span>
-									:<span>has been forced to draw a new card!</span>
+									:<span>been forced to draw a new card!</span>
 			default: {
 				return <p className={classes.unknown}>dispatched an unknown action! </p>;
 			}
