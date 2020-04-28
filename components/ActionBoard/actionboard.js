@@ -81,6 +81,11 @@ const ActionBoard = (props) => {
 	const [cardDrawing, setCardDrawing] = React.useState(false);
 	const [cardToPlayer, setCardToPlayer] = React.useState({});
 	const [hideButton, setHideButton] = React.useState(false);
+	const actionsList = React.useRef(null);
+	
+	React.useEffect(() => {
+		actionsList.current.scrollIntoView({behavior: 'smooth'});
+	}, [ActionsList]);
 	
 	const startButton = () => {
 		props.startGame();
@@ -191,7 +196,7 @@ const ActionBoard = (props) => {
 				<h4> Round: {props.round} </h4>
 			</div>
 			<Divider style={{width: '100%'}}/>
-			<div className={classes.body}>
+			<div className={classes.body} ref={actionsList}>
 				{display}
 			</div>
 			<Divider />
