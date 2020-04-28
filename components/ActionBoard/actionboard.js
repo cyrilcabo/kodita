@@ -85,7 +85,7 @@ const ActionBoard = (props) => {
 	
 	React.useEffect(() => {
 		actionsList.current.scrollTop = actionsList.current.scrollHeight;
-	}, [actonQueue.queue]);
+	}, [actionQueue.queue]);
 	
 	const startButton = () => {
 		props.startGame();
