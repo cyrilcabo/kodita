@@ -145,14 +145,7 @@ const ActionBoard = (props) => {
 					disabled={cardDrawing} 
 					onClick={cardDraw.bind(this, actionQueue.queue[actionQueue.queue.length-1].payload)}
 				> Pick Card </Button>,
-				<Button color="secondary" variant="contained" onClick={props.dispatchAction.bind(this, {
-					name: "PASS",
-					details: "Cancel attack",
-					variant: null,
-					type: null,
-					purpose: "DEFENSE",
-					fee: null,
-				}, null)}> Pass </Button>
+				<Button color="secondary" variant="contained" onClick={pass}> Pass </Button>
 			];
 		} else {
 			return <Button color="secondary" variant="contained" disabled> Challenge </Button>
@@ -160,6 +153,18 @@ const ActionBoard = (props) => {
 	}
 	const blink = (((actionQueue.name === "SHOW CARD" || actionQueue.name === "KODITA" || actionQueue.name === "ASSASSIN" || (actionQueue.name === "INQUISITOR" && (actionQueue.variant === "SHOW" || actionQueue.variant==="DRAW"))) && actionQueue.recepientId === user.id) || cardDrawing || (actionQueue.name === "AMBASSADOR" && actionQueue.purpose === "ATTACK" && actionQueue && actionQueue.senderId === user.id)) ?true :false;
 	
+	const pass = () => {
+		props.dispatchAction({
+			name: "PASS",
+			details: "Cancel attack",
+			variant: null,
+			type: null,
+			purpose: "DEFENSE",
+			fee: null,
+		});
+		if (cardDrawing) setCardDrawing(false);
+	}
+
 	const cardDraw = (card) => {
 		setCardDrawing(true);
 		setCardToPlayer(card);
