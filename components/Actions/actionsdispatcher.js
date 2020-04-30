@@ -21,7 +21,7 @@ const ActionDispatcher = (props) => {
 			action.state = false;
 		} else {
 			if (actionQueue.type === "IS_OPEN") {
-				if (actionQueue.name==="FOREIGN AID" && action.name==="DUKE") {
+				if (actionQueue.name==="FOREIGN AID" && action.name==="DUKE" && actionQueue.senderId !== user.id) {
 					action.state = true;
 				}
 			} else if (actionQueue.type === "HAS_RECEPIENT" && actionQueue.recepientId === user.id) {
