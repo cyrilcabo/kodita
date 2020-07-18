@@ -20,7 +20,7 @@ import Router from 'next/router';
 
 const useStyle = makeStyles({
 	root: {
-		height: '100vh',
+		height: '100%',
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
@@ -32,6 +32,9 @@ const useStyle = makeStyles({
 	},
 	formcontrols: {
 		height: '8vh',
+	},
+	mainIcon: {
+		borderRadius: '10%',
 	}
 })
 
@@ -61,7 +64,7 @@ const Index = (props) => {
 					<Paper className={classes.logincontainer}>	
 						<Grid container justify="center" alignItems="center" item xs={12}>
 							<Grid item container xs={10} direction="column" alignItems="center">
-								<UtilIcon name="KODITA" width={'100%'} height={'100%'} isRound />
+								<UtilIcon name="KODITA" height={200} className={classes.mainIcon} />
 								<Typography component={'h2'} style={{fontSize: '4em'}} > Kodita </Typography>
 							</Grid>
 							<Divider />
