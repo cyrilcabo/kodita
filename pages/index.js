@@ -42,7 +42,7 @@ const useStyle = makeStyles(theme => ({
 	title: {
 		fontSize: '4rem',
 		[theme.breakpoints.down('sm')]: {
-			fontSize: '2rem',
+			fontSize: '3rem',
 		}
 	}
 }));
