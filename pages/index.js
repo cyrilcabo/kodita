@@ -18,7 +18,7 @@ import UtilIcon from '../components/GameUtils/utilicon';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Router from 'next/router';
 
-const useStyle = makeStyles({
+const useStyle = makeStyles(theme => ({
 	root: {
 		height: '100%',
 		width: '100%',
@@ -34,9 +34,12 @@ const useStyle = makeStyles({
 		height: '8vh',
 	},
 	mainIcon: {
-		borderRadius: '10%',
+		height: 200,
+		[theme.breakpoints.down('sm')]: {
+			height: 150,
+		}
 	}
-})
+}));
 
 const Index = (props) => {
 	const classes = useStyle();
@@ -60,11 +63,11 @@ const Index = (props) => {
 	return (
 		<Layout disableNav>
 			<div className={classes.root}>
-				<Grid item xs={10} md={7} style={{height: '100%',}} alignItems="center" container>
+				<Grid item xs={11} md={7} style={{height: '100%',}} alignItems="center" container>
 					<Paper className={classes.logincontainer}>	
 						<Grid container justify="center" alignItems="center" item xs={12}>
 							<Grid item container xs={10} direction="column" alignItems="center">
-								<UtilIcon name="KODITA" height={200} className={classes.mainIcon} />
+								<UtilIcon name="KODITA" style={{borderRadius: '10%'}} className={classes.mainIcon} />
 								<Typography component={'h2'} style={{fontSize: '4em'}} > Kodita </Typography>
 							</Grid>
 							<Divider />
