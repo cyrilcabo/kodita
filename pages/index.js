@@ -29,6 +29,9 @@ const useStyle = makeStyles(theme => ({
 	logincontainer: {
 		height: '70%',
 		padding: 20,
+		[theme.breakpoints.down('sm')]: {
+			height: '50%',
+		}
 	},
 	formcontrols: {
 		height: '8vh',
