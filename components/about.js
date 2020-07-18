@@ -119,7 +119,7 @@ const About = () => {
 				<p> Icons used in this game were taken from <a href="https://game-icons.net">game-icons.net</a> </p>
 			<Divider />
 			<div className={classes.footer}>
-				Developed by CyrilCabo. All rights reserved 2020.
+				Developed by AlphaDevelopment. All rights reserved 2020.
 			</div>
 		</Paper>
 	);
