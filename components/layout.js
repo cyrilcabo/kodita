@@ -41,7 +41,7 @@ const Layout = (props) => {
 				?""
 				:navbar
 			}
-			<div style={{minHeight: 768}}>
+			<div style={{height: 768}}>
 				{props.children}
 			</div>
 			<style global jsx>{`
