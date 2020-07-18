@@ -33,6 +33,7 @@ const useStyle = makeStyles(theme => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		overflowY: 'auto',
+		textAlign: 'center'
 	}, 
 	footer: { 
 		height: '30%', 
@@ -99,7 +100,7 @@ const ActionBoard = (props) => {
 			:props.starting
 				?<h4> Game is starting... </h4>
 				:props.ready
-					?<div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}> 
+					?<div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}> 
 						<h4> Players ready, start now! </h4>
 						{props.isHost ?<Button style={{display: hideButton ?"none" :"block"}} disabled={!props.ready} onClick={startButton} variant="outlined" color="secondary"> START GAME </Button> :""}
 					</div>
