@@ -27,7 +27,7 @@ const useStyle = makeStyles(theme => ({
 		alignItems: 'center',
 	},
 	logincontainer: {
-		height: '80%',
+		height: '70%',
 		padding: 20,
 	},
 	formcontrols: {
