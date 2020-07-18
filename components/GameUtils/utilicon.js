@@ -15,7 +15,7 @@ import {
 } from '../actionicons';
 
 const UtilIcon = (props) => {
-	const {name, size, isRound} = props;
+	const {name, size, isRound, className, style} = props;
 	
 	let width, height;
 	
@@ -36,31 +36,31 @@ const UtilIcon = (props) => {
 	
 	switch (name) {
 		case "AMBASSADOR":
-			return <AmbassadorIcon width={width} height={height} isRound={isRound}/>;
+			return <AmbassadorIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "CAPTAIN":
-			return <CaptainIcon width={width} height={height} isRound={isRound} />;
+			return <CaptainIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "INQUISITOR":
-			return <InquisitorIcon width={width} height={height} isRound={isRound} />;
+			return <InquisitorIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "CONTESSA":
-			return <BlockIcon width={width} height={height} isRound={isRound} />
+			return <BlockIcon width={width} height={height} isRound={isRound} style={style} className={className} />
 		case "ASSASSIN":
-			return <AssassinIcon width={width} height={height} isRound={isRound} />;
+			return <AssassinIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "DUKE":
-			return <DukeIcon width={width} height={height} isRound={isRound} />;
+			return <DukeIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "INCOME":
-			return <IncomeIcon width={width} height={height} isRound={isRound} />;
+			return <IncomeIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "KODITA":
-			return <KoditaIcon width={width} height={height} isRound={isRound} />;
+			return <KoditaIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "CHALLENGE":
-			return <ChallengeIcon width={width} height={height} isRound={isRound} />;
+			return <ChallengeIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "FOREIGN AID":
-			return <ForeignAidIcon width={width} height={height} isRound={isRound} />;
+			return <ForeignAidIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "DEAD":
-			return <DeadIcon width={width} height={height} isRound={isRound} />;
+			return <DeadIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "WINNER":
-			return <WinnerIcon width={width} height={height} isRound={isRound} />;
+			return <WinnerIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		case "UNKNOWN":
-			return <UnknownIcon width={width} height={height} isRound={isRound} />;
+			return <UnknownIcon width={width} height={height} isRound={isRound} style={style} className={className} />;
 		default: return null;
 	}
 }
