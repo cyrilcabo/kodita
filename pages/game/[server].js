@@ -27,6 +27,7 @@ const useStyle = makeStyles(theme => ({
 		height: '85%', 
 		width: '100%', 
 		display: 'flex', 
+		position: 'relative',
 		justifyContent: 'center',
 		[theme.breakpoints.down('sm')]: {
 			
@@ -67,7 +68,7 @@ const useStyle = makeStyles(theme => ({
 		width: '100%',
 		height: '10%',
 		position: 'absolute',
-		bottom: 0,
+		bottom: -30,
 		display: 'none',
 		[theme.breakpoints.down('sm')]: {
 			display: 'block',
