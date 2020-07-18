@@ -38,6 +38,12 @@ const useStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			height: 150,
 		}
+	},
+	title: {
+		fontSize: '4rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '2rem',
+		}
 	}
 }));
 
@@ -68,7 +74,7 @@ const Index = (props) => {
 						<Grid container justify="center" alignItems="center" item xs={12}>
 							<Grid item container xs={10} direction="column" alignItems="center">
 								<UtilIcon name="KODITA" style={{borderRadius: '10%'}} className={classes.mainIcon} />
-								<Typography component={'h2'} style={{fontSize: '4em'}} > Kodita </Typography>
+								<Typography component={'h2'} className={classes.title} > Kodita </Typography>
 							</Grid>
 							<Divider />
 							<Grid xs={10} md={8} item spacing={1} container >
