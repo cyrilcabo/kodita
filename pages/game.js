@@ -190,7 +190,7 @@ const Game = (props) => {
 								}
 								</Grid>
 							<Divider />
-							<Grid item xs={12} container justify="space-around" style={{height: '10%'}}>
+							<Grid item xs={12} container justify="space-around" style={{height: '10%', marginTop: 'auto'}}>
 								<Grid item xs={12} md={4}>
 									<Button color="primary" variant="contained" fullWidth onClick={newGame}>
 										Create Game
