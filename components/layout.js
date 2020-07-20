@@ -13,7 +13,7 @@ import React from 'react';
 
 const Layout = (props) => {
 	
-	const navbar = <AppBar position="sticky" style={{marginBottom: 10, height: '10vh', backgroundColor: '#4c5062'}}>
+	const navbar = <AppBar position="sticky" style={{marginBottom: 10, height: '10%', backgroundColor: '#4c5062'}}>
 		<Container>
 			<Toolbar stlye={{display: 'flex'}}>
 				<IconButton edge="start">
