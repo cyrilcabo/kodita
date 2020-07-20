@@ -34,7 +34,7 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	formcontrols: {
-		height: '8vh',
+		height: 50,
 	},
 	mainIcon: {
 		height: 200,
