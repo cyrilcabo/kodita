@@ -30,7 +30,7 @@ const useStyle = makeStyles(theme => ({
 		position: 'relative',
 		justifyContent: 'center',
 		[theme.breakpoints.down('sm')]: {
-			
+			height: '100%',
 		}
 	},
 	playerlist: {
