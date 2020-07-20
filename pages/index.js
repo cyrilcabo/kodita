@@ -67,6 +67,11 @@ const Index = (props) => {
 		} 
 	}
 	
+	const submitName = (e) => {
+		e.preventDefault();
+		login();
+	}
+	
 	const handleAbout = () => setAbout(about ?false :true);
 	
 	return (
@@ -82,16 +87,19 @@ const Index = (props) => {
 							<Divider />
 							<Grid xs={10} md={8} item spacing={1} container >
 								<Grid item xs={12}>
-									<TextField 
-										fullWidth 
-										value={name} 
-										variant="outlined" 
-										color="secondary" 
-										onChange={handleName} 
-										label="Name" 
-										className={classes.formcontrols}
-										style={{paddingBottom: 4}}
-									/>
+									<form onSubmit={submitName}>
+										<TextField 
+											fullWidth 
+											value={name} 
+											variant="outlined" 
+											color="secondary" 
+											onChange={handleName} 
+											label="Name" 
+											className={classes.formcontrols}
+											style={{paddingBottom: 4}}
+										/>
+										<input type="submit" style={{display: "none"}} />
+									</form>
 								</Grid>
 								<Grid item xs={12}>
 									<Button fullWidth onClick={login} disabled={name.length < 5} variant="outlined" color="secondary" className={classes.formcontrols}>
