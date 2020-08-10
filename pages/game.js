@@ -23,12 +23,14 @@ const useStyle = makeStyles(theme => ({
 	root: {
 		height: '85%',
 		width: '100%',
+		[theme.breakpoints.down('xs')]: {
+			height: '95%',
+		}
 	},
 	lobbycontainer: {
 		height: '100%',
 		width: '98%',
-		paddingLeft: '0% 1% 0% 1%',
-		paddingTop: '2%',
+		padding: '2% 1% 0% 1%',
 	},
 	playersin: {
 		color: 'white',
