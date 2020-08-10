@@ -77,7 +77,7 @@ const Index = (props) => {
 	return (
 		<Layout disableNav>
 			<div className={classes.root}>
-				<Grid item xs={11} md={7} style={{height: '100%',}} alignItems="center" container>
+				<Grid item xs={11} md={7} style={{height: '100%',}} alignItems="center" justify="center" container>
 					<Paper className={classes.logincontainer}>	
 						<Grid container justify="center" alignItems="center" item xs={12}>
 							<Grid item container xs={10} direction="column" alignItems="center">
