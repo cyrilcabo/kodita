@@ -51,6 +51,9 @@ const useStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			width: '95%',
 			height: '90%',
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginBottom: 100,
 		}
 	},
 	actioncontrols: {
@@ -72,7 +75,11 @@ const useStyle = makeStyles(theme => ({
 		display: 'none',
 		[theme.breakpoints.down('sm')]: {
 			display: 'block',
-		}
+		},
+		[theme.brealpoints.down('xs')]: {
+			position: 'fixed',
+			bottom: 0,
+		},
 	},
 	bottomcontrols: {
 		width: '100%',
