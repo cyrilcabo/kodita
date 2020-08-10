@@ -24,7 +24,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyle = makeStyles(theme => ({
 	root: {
-		height: '85%', 
+		height: '85%',
+		maxHeight: 768,
 		width: '100%', 
 		display: 'flex', 
 		position: 'relative',
