@@ -30,6 +30,7 @@ const useStyle = makeStyles(theme => ({
 	lobbycontainer: {
 		height: '100%',
 		width: '98%',
+		maxHeight: 768,
 		padding: '2% 1% 0% 1%',
 	},
 	playersin: {
