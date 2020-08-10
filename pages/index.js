@@ -30,16 +30,20 @@ const useStyle = makeStyles(theme => ({
 		height: '70%',
 		padding: 20,
 		[theme.breakpoints.down('sm')]: {
-			height: '55%',
+			height: '80%',
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 'initial',
+			padding: '0px 30px',
 		}
 	},
 	formcontrols: {
 		height: 50,
 	},
 	mainIcon: {
-		height: 200,
+		height: 180,
 		[theme.breakpoints.down('sm')]: {
-			height: 150,
+			height: 130,
 		}
 	},
 	title: {
