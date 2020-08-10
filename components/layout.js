@@ -12,7 +12,7 @@ import UtilIcon from './GameUtils/utilicon';
 import React from 'react';
 
 //Styles
-import makeStyles from '@material-ui/core/styles/makeStyles;
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyle = makeStyles(theme => ({
 	root: {
