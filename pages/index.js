@@ -28,6 +28,7 @@ const useStyle = makeStyles(theme => ({
 	},
 	logincontainer: {
 		height: '70%',
+		maxHeight: 768,
 		padding: 20,
 		display: 'flex',
 		alignItems: 'center',
