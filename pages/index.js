@@ -29,12 +29,11 @@ const useStyle = makeStyles(theme => ({
 	logincontainer: {
 		height: '70%',
 		padding: 20,
-		[theme.breakpoints.down('sm')]: {
-			height: '80%',
-		},
+		display: 'flex',
+		alignItems: 'center',
 		[theme.breakpoints.down('xs')]: {
 			height: 'initial',
-			padding: '0px 30px',
+			padding: '50px 0px',
 		}
 	},
 	formcontrols: {
