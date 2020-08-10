@@ -11,8 +11,23 @@ import UtilIcon from './GameUtils/utilicon';
 
 import React from 'react';
 
+//Styles
+import makeStyles from '@material-ui/core/styles/makeStyles;
+
+const useStyle = makeStyles(theme => ({
+	root: {
+		height: '100vh',
+		[theme.breakpoints.down('sm')]: {
+			height: 668,
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 568,
+		}
+	},
+}));
+
 const Layout = (props) => {
-	
+	const classes = useStyle();
 	const navbar = <AppBar position="sticky" style={{marginBottom: 10, height: '10%', backgroundColor: '#4c5062'}}>
 		<Container>
 			<Toolbar stlye={{display: 'flex'}}>
@@ -41,7 +56,7 @@ const Layout = (props) => {
 				?""
 				:navbar
 			}
-			<div style={{height: 768}}>
+			<div className={classes.root}>
 				{props.children}
 			</div>
 			<style global jsx>{`
