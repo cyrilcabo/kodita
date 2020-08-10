@@ -76,7 +76,7 @@ const useStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			display: 'block',
 		},
-		[theme.brealpoints.down('xs')]: {
+		[theme.breakpoints.down('xs')]: {
 			position: 'fixed',
 			bottom: 0,
 		},
