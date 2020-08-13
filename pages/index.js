@@ -32,6 +32,9 @@ const useStyle = makeStyles(theme => ({
 		padding: 20,
 		display: 'flex',
 		alignItems: 'center',
+		[theme.breakpoints.up('lg')]: {
+			minHeight: 500,
+		},
 		[theme.breakpoints.down('xs')]: {
 			height: 'initial',
 			padding: '50px 0px',
