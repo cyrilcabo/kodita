@@ -1,12 +1,29 @@
-# kodita
-A card-bluff game.
+# Kodita
 
-Kodita is a game of bluff. To master this game, you have to be a good liar. Well, besides the need to have heavy planning and good strategy... and being a good liar.
+## Introduction
+Kodita is a web-based, multiplayer, game of bluff. Kodita is an online adaptation of the card game, coup d’etat. To master this game, you have to be a good liar. Well, besides the need to have heavy planning and good strategy... and being a good liar.
 
-In Kodita, there are 6 main cards, each possessing actions that can be utilized to defeat your enemies. Each card has 3 copies, making the deck have a total of 18 cards. A maximum of 6 players are allowed to play the game. At the start of the game, each player is randomly given two cards, leaving 6 cards in the deck.
+### Demo
+Kodita is live at: https://kodita.herokuapp.com . Check it out, and don't forget to follow me for more projects like this.
 
-To play the game, you can use any of the actions that the 6 cards have, regardless if you have the card or not. However, whenever another player notices that you are lying, he can challenge your action, and at which you have the option to back-out from the challenge. However, if a challenge is called upon you, and you actually have the card, you can show this card, leaving the player who challenged you lose one card. If a player loses both if its two cards, he is considered dead, and is out of the game. Successfully luring your enemy into challenging you, when in fact, you had the card, is only one of the three ways you can make an enemy lose a card. The other two, involves spending coins, therefore, you must also include in your strategy, on how you would effectively gain coins.
+## Technologies
+Bookmate is currently built with the following technologies:
+* NodeJS
+* ExpressJS
+* ReactJS
+* NextJS
+* Material-UI
+* Socket.io
 
-In addition to the actions of the 6 cards, there are 3 more that you can do, to improve your game plan, and hopefully defeat your opponents. First is the INCOME: this is the safest move of all, it is the true definition of "slowly but surely". With INCOME, you can take one coin from the bank, and no one can interrupt your move. Next is the FOREIGN AID: with the FOREIGN AID, you can take two coins from the bank, but with the risk of being blocked by a DUKE card. Then finally, the KODITA, this action instantly kills your opponent's card, at the cost of 7 coins.
+## Setup
+You can clone the repository to your local machine. Be sure that you have NodeJS installed. You can then run `npm install`, and after installing dependencies, run `npm build`. Finally, you can run `npm start`, and check your application running at `http://localhost:3000`.
 
-By effectively utilizing each actions, and successfuly fooling your enemies, you will be hailed as the KODITA MASTER (Which easily translates to you being a fraud). Conquer your enemy, and be the last man standing!
+## Features
+### Kodita Homepage
+Once you first visit Kodita, you will be asked to enter you IGN (in-game name) on the homepage, before you can proceed. IGNs need to be alteast 5 characters. On the homepage, you can also view the instructions on how to play the game.
+
+### Game Lobby
+On the Game Lobby, you can see the list of games that are active. You can see if the game is either still in lobby, or is already starting. You can only join the game, if it hasn't started yet. Furthermore, if there are a lot of games, you can search for a game room, by searching the IGN of the game host.
+
+### Game Room
+On the Game Room page, you can play Kodita! It is divided into three sections: players' list, actions panel and the actions history of each round. Each player will have to take turns until someone wins the game. The game will only end when one wins, or there's only a single player remaining (when other players quit).
